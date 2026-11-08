@@ -1,10 +1,201 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=Barlow:wght@400;500;600&display=swap");
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+/* ---------- Page: a daytime sky with drifting clouds ---------- */
+
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  min-height: 100vh;
+  padding: 2.5rem 1rem;
+  font-family: "Barlow", system-ui, sans-serif;
+  color: #fff;
+  background:
+    radial-gradient(ellipse 180px 50px at 15% 12%, rgba(255, 255, 255, 0.7), transparent 70%),
+    radial-gradient(ellipse 120px 36px at 22% 9%, rgba(255, 255, 255, 0.6), transparent 70%),
+    radial-gradient(ellipse 220px 60px at 82% 22%, rgba(255, 255, 255, 0.55), transparent 70%),
+    radial-gradient(ellipse 140px 40px at 74% 19%, rgba(255, 255, 255, 0.5), transparent 70%),
+    linear-gradient(180deg, #3b8fd9 0%, #74b6ec 55%, #c4e2f7 100%);
+  background-attachment: fixed;
+}
+
+/* ---------- Search bar ---------- */
+
+form {
+  display: flex;
+  max-width: 460px;
+  margin: 0 auto 2.5rem;
+  background: #fff;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(20, 60, 110, 0.25);
+  overflow: hidden;
+}
+
+#search {
+  flex: 1;
+  min-width: 0;
+  padding: 0.85rem 1.25rem;
+  font: inherit;
+  font-size: 1.05rem;
+  color: #1d3550;
+  border: none;
+  background: transparent;
+}
+
+#search::placeholder {
+  color: #8aa0b6;
+}
+
+#search:focus {
+  outline: none;
+}
+
+form:focus-within {
+  box-shadow: 0 0 0 3px #ffd34d, 0 6px 20px rgba(20, 60, 110, 0.25);
+}
+
+#submit {
+  padding: 0 1.5rem;
+  font: inherit;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #1d3550;
+  background: #ffd34d; /* sunshine yellow */
+  border: none;
+  cursor: pointer;
+}
+
+#submit:hover {
+  background: #ffc61a;
+}
+
+/* ---------- Card grid ---------- */
+
+#weather {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.25rem;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+/* ---------- Weather card (default = clear day) ---------- */
+
+.WeatherList {
+  --sky: linear-gradient(160deg, #1e7fd6 0%, #4fa8ec 60%, #8fcdf5 100%);
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+  padding: 1.4rem 1.5rem;
+  border-radius: 20px;
+  background: var(--sky);
+  box-shadow: 0 10px 25px rgba(15, 45, 85, 0.3);
+  animation: card-in 0.4s ease-out;
+}
+
+/* Keep text above the sun / rain / snow decorations */
+.WeatherList > * {
+  position: relative;
+  z-index: 1;
+}
+
+.WeatherList .spacing {
+  margin: 0 0 0.5rem;
+  max-width: 75%;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.WeatherList .weatherInfo {
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
+  opacity: 0.92;
+}
+
+/* First info line = temperature, shown big like a weather station readout */
+.WeatherList .weatherInfo:first-of-type {
+  margin: 0.25rem 0 0.4rem;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Last line = High / Low, styled as a little pill */
+.WeatherList .weatherInfo:last-of-type {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+/* ---------- Decorations ---------- */
+
+/* Sun (default) */
+.WeatherList::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff6c2 0%, #ffd34d 45%, rgba(255, 211, 77, 0) 70%);
+}
+
+/* A soft cloud drifting across the bottom of each card */
+.WeatherList::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 110px 34px at 78% 92%, rgba(255, 255, 255, 0.35), transparent 70%),
+    radial-gradient(ellipse 70px 26px at 64% 96%, rgba(255, 255, 255, 0.3), transparent 70%);
+}
+
+/* ---------- Animations ---------- */
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .WeatherList,
+  .WeatherList::after {
+    animation: none !important;
+  }
+}
+
+/* ---------- Dark mode: night sky page ---------- */
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.8) 1px, transparent 2px),
+      radial-gradient(circle at 70% 8%, rgba(255, 255, 255, 0.7) 1px, transparent 2px),
+      radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.6) 1px, transparent 2px),
+      radial-gradient(circle at 40% 25%, rgba(255, 255, 255, 0.5) 1px, transparent 2px),
+      linear-gradient(180deg, #0b1530 0%, #16264d 60%, #263b6b 100%);
+    background-attachment: fixed;
+  }
 }
